@@ -1,0 +1,54 @@
+#! /bin/bash
+
+readonly QTVER=4.7.2-1_18
+readonly BASEDIR=$(dirname $(readlink -f "$0"))
+
+set -e
+for version in 5 6; do
+    case "$version" in
+	5)
+	    archs="x86_64 i386"
+	    ;;
+	6)
+	    archs="x86_64 i686"
+	    ;;
+    esac
+
+    for arch in $archs; do
+	case "$arch" in
+	i386|i686)
+	    basearch="i386"
+	    ;;
+	x86_64)
+	    basearch="x86_64"
+	    ;;
+	esac
+
+	baseurl="http://dl.atrpms.net/el${version}-${basearch}/atrpms/testing"
+	mkdir -p "${BASEDIR}/RPMS/el/${version}/${basearch}"
+	cd "${BASEDIR}/RPMS/el/${version}/${basearch}"
+
+	# "qt47-doc-${QTVER}.el${version}.${arch}.rpm" - skip doc package, big and useless
+	for pkg in \
+	    "qt47-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-assistant-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-config-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-demos-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-designer-plugin-phonon-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-devel-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-examples-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-mysql-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-odbc-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-postgresql-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-tds-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-webkit-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-webkit-devel-${QTVER}.el${version}.${arch}.rpm" \
+	    "qt47-x11-${QTVER}.el${version}.${arch}.rpm" \
+	    "phonon-backend-gstreamer-${QTVER}.el${version}.${arch}.rpm"; do
+
+	    rm -f "${pkg}"
+	    wget "${baseurl}/${pkg}"
+	done
+    done
+done
+

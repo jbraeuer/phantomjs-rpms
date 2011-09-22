@@ -18,6 +18,8 @@ run your headless tests.
 - yum/rpm install qt47-devel qt47-webkit qt47-webkit-devel sqlite-devel
 
 # How to build
-- run ./rpm -d
+- source code is included for PhantomJS 1.1 and 1.2
+- use fetch-phantomjs-branch script to fetch sources from 1.3 branch
+- ./rpm SPECS/phantomjs-<version>.spec
 
 Have fun!

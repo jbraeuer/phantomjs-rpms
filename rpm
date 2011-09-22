@@ -2,19 +2,18 @@
 
 usage() {
     echo "$0 - a script to build phantomjs rpms"
-    echo "Options:"
-    echo " -d - do package the rpm"
+    echo "Usage: $0 <spec>"
 }
 
-if [ "$1" != "-d" ]; then
+if [ -z "$1" ]; then
     usage
     exit 1
 fi
 
-# build spec file
-readonly BASEDIR=$(readlink -f $(dirname "$0"))
-mkdir -p ${BASEDIR}/{BUILD,RPMS}
-rpmbuild --verbose \
-    --define "_topdir ${BASEDIR}" \
-    -bb "${BASEDIR}/SPECS/phantomjs.spec"
+spec=$(readlink -f "$1")
+basedir=$(dirname $(readlink -f "$0"))
 
+mkdir -p ${basedir}/{BUILD,RPMS}
+rpmbuild --verbose \
+    --define "_topdir ${basedir}" \
+    -bb "${spec}"

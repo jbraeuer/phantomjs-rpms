@@ -1,0 +1,19 @@
+#! /bin/bash
+
+if [ -z "$1" ]; then
+   echo "Usage: $0 <branch>"
+   exit 1
+fi
+
+set -e
+
+branch="$1"
+tmp=$(mktemp -d)
+basedir=$(dirname $(readlink -f "$0"))
+gitbase=git://github.com/ariya/phantomjs.git
+
+cd "${tmp}"
+git clone -b "${branch}" "${gitbase}"
+cd phantomjs
+git archive --verbose --format zip --prefix "phantomjs-${branch}/" --output "${basedir}/SOURCES/phantomjs-${branch}-source.zip" HEAD
+rm -rf "${tmp}"

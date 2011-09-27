@@ -1,7 +1,7 @@
 Summary: PhantomJS is a headless WebKit with JavaScript API
 Name: phantomjs
 Version: 1.3.0
-Release: 3
+Release: 6
 License: BSD
 Group: unknown
 URL: http://code.google.com/p/phantomjs/
@@ -32,8 +32,10 @@ Requires: xorg-x11-fonts-base
 Requires: xorg-x11-fonts-cyrillic
 Requires: xorg-x11-fonts-ethiopic
 Requires: xorg-x11-fonts-misc
+%if 0%{?el5}
 Requires: xorg-x11-fonts-syriac
 Requires: xorg-x11-fonts-truetype
+%endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
@@ -50,7 +52,9 @@ rm -rf "$RPM_BUILD_ROOT"
 
 mkdir -p "$RPM_BUILD_ROOT/usr/bin"
 cp bin/* "$RPM_BUILD_ROOT/usr/bin"
+%if 0%{?el5}
 cp %SOURCE1 "$RPM_BUILD_ROOT/usr/bin/xvfb-run"
+%endif
 find "$RPM_BUILD_ROOT/usr/bin" -type f -exec chmod 755 '{}' ';'
 
 mkdir -p "$RPM_BUILD_ROOT/usr/share/doc/%{name}"
@@ -68,10 +72,15 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 /etc/rc.d/init.d/xvfb
 /usr/bin/phantomjs
-/usr/bin/xvfb-run
 /usr/share/doc/%{name}/examples
+%if 0%{?el5}
+/usr/bin/xvfb-run
+%endif
 
 %changelog
+* Tue Sep 27 2011 Jens Braeuer <jens@numberfour.eu> - 1.3.0-6
+- Package 1.3.0/Water Lily for SL6.1. Tested on el5 and el6 only.
+
 * Thu Sep 22 2011 Jens Braeuer <jens@numberfour.eu> - 
 - Initial build.
 

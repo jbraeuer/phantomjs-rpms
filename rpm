@@ -16,4 +16,5 @@ basedir=$(dirname $(readlink -f "$0"))
 mkdir -p ${basedir}/{BUILD,RPMS}
 rpmbuild --verbose \
     --define "_topdir ${basedir}" \
+    --define "_rpmdir ${basedir}" \
     -bb "${spec}"

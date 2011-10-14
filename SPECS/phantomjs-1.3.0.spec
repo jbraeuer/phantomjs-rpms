@@ -1,7 +1,7 @@
 Summary: PhantomJS is a headless WebKit with JavaScript API
 Name: phantomjs
 Version: 1.3.0
-Release: 7
+Release: 8%{?dist}
 License: BSD
 Group: unknown
 URL: http://code.google.com/p/phantomjs/

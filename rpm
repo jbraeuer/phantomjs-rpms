@@ -13,8 +13,8 @@ fi
 spec=$(readlink -f "$1")
 basedir=$(dirname $(readlink -f "$0"))
 
-mkdir -p ${basedir}/{BUILD,RPMS}
+mkdir -p ${basedir}/{BUILD,BUILDROOT,RPMS}
 rpmbuild --verbose \
     --define "_topdir ${basedir}" \
-    --define "_rpmdir ${basedir}" \
+    --define "_rpmdir ${basedir}/RPMS" \
     -bb "${spec}"

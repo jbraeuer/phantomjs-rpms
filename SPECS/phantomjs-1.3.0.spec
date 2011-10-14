@@ -1,17 +1,15 @@
 Summary: PhantomJS is a headless WebKit with JavaScript API
 Name: phantomjs
 Version: 1.3.0
-Release: 6
+Release: 7
 License: BSD
 Group: unknown
 URL: http://code.google.com/p/phantomjs/
 Source0: %{name}-%{version}-source.tar.gz
 Source1: xvfb-run.sh
-Source2: xvfb.init
 BuildRequires: qt47-devel
 BuildRequires: qt47-webkit-devel
 BuildRequires: sqlite-devel
-Requires: dpkg
 Requires: xorg-x11-xauth
 Requires: xorg-x11-server-Xvfb
 Requires: xorg-x11-server-Xorg
@@ -60,17 +58,12 @@ find "$RPM_BUILD_ROOT/usr/bin" -type f -exec chmod 755 '{}' ';'
 mkdir -p "$RPM_BUILD_ROOT/usr/share/doc/%{name}"
 cp -r examples "$RPM_BUILD_ROOT/usr/share/doc/%{name}/"
 
-mkdir -p "$RPM_BUILD_ROOT/etc/rc.d/init.d"
-cp %SOURCE2 "$RPM_BUILD_ROOT/etc/rc.d/init.d/xvfb"
-chmod 755 "$RPM_BUILD_ROOT/etc/rc.d/init.d/xvfb"
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
 %doc
-/etc/rc.d/init.d/xvfb
 /usr/bin/phantomjs
 /usr/share/doc/%{name}/examples
 %if 0%{?el5}

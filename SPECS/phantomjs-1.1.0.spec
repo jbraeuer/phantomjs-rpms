@@ -1,7 +1,7 @@
 Summary: PhantomJS is a headless WebKit with JavaScript API
 Name: phantomjs
 Version: 1.1.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: BSD
 Group: unknown
 URL: http://code.google.com/p/phantomjs/
@@ -52,7 +52,9 @@ rm -rf "$RPM_BUILD_ROOT"
 
 mkdir -p "$RPM_BUILD_ROOT/usr/bin"
 cp bin/* "$RPM_BUILD_ROOT/usr/bin"
+%if 0%{?el5}
 cp %SOURCE1 "$RPM_BUILD_ROOT/usr/bin/xvfb-run"
+%endif
 find "$RPM_BUILD_ROOT/usr/bin" -type f -exec chmod 755 '{}' ';'
 
 mkdir -p "$RPM_BUILD_ROOT/usr/share/doc/%{name}"
@@ -70,7 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc
 /etc/rc.d/init.d/xvfb
 /usr/bin/phantomjs
+%if 0%{?el5}
 /usr/bin/xvfb-run
+%endif
 /usr/share/doc/%{name}/examples
 
 %changelog

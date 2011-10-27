@@ -1,7 +1,7 @@
 Summary: PhantomJS is a headless WebKit with JavaScript API
 Name: phantomjs
 Version: 1.1.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: BSD
 Group: unknown
 URL: http://code.google.com/p/phantomjs/
@@ -32,8 +32,10 @@ Requires: xorg-x11-fonts-base
 Requires: xorg-x11-fonts-cyrillic
 Requires: xorg-x11-fonts-ethiopic
 Requires: xorg-x11-fonts-misc
+%if 0%{?el5}
 Requires: xorg-x11-fonts-syriac
 Requires: xorg-x11-fonts-truetype
+%endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description

@@ -1,7 +1,7 @@
 Summary: PhantomJS is a headless WebKit with JavaScript API
 Name: phantomjs
 Version: 1.1.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: BSD
 Group: unknown
 URL: http://code.google.com/p/phantomjs/
@@ -11,6 +11,8 @@ Source2: xvfb.init
 BuildRequires: qt47-devel
 BuildRequires: qt47-webkit-devel
 BuildRequires: sqlite-devel
+Requires: qt47
+Requires: qt47-webkit
 Requires: dpkg
 Requires: xorg-x11-xauth
 Requires: xorg-x11-server-Xvfb

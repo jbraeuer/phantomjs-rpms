@@ -151,7 +151,7 @@ if [ -z "$AUTHFILE" ]; then
         error "temporary directory $XVFB_RUN_TMPDIR already exists"
         exit 4
     fi
-    AUTHFILE=$(mktemp -p "$XVFB_RUN_TMPDIR" Xauthority)
+    AUTHFILE=$(mktemp --tmpdir="$XVFB_RUN_TMPDIR" Xauthority.XXXXXXXX)
 fi
 
 # Start Xvfb.

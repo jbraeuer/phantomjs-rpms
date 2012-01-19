@@ -10,7 +10,7 @@ set -e
 branch="$1"
 tmp=$(mktemp -d /tmp/phantomjs_rpm_XXXX)
 basedir=$(cd $(dirname "$0") && pwd)
-gitbase=git://github.com/ariya/phantomjs.git
+gitbase=https://github.com/ariya/phantomjs.git
 
 cd "${tmp}"
 git clone -b "${branch}" "${gitbase}"

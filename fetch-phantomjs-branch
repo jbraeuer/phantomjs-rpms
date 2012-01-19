@@ -15,5 +15,5 @@ gitbase=https://github.com/ariya/phantomjs.git
 cd "${tmp}"
 git clone -b "${branch}" "${gitbase}"
 cd phantomjs
-git archive --verbose --format zip --prefix "phantomjs-${branch}/" --output "${basedir}/SOURCES/phantomjs-${branch}-source.zip" HEAD
+git archive --verbose --prefix "phantomjs-${branch}/" --output "${basedir}/SOURCES/phantomjs-${branch}-source.tar.gz" HEAD
 rm -rf "${tmp}"

@@ -8,12 +8,12 @@ fi
 set -e
 
 branch="$1"
-tmp=$(mktemp -d)
-basedir=$(dirname $(readlink -f "$0"))
-gitbase=git://github.com/ariya/phantomjs.git
+tmp=$(mktemp -d /tmp/phantomjs_rpm_XXXX)
+basedir=$(cd $(dirname "$0") && pwd)
+gitbase=https://github.com/ariya/phantomjs.git
 
 cd "${tmp}"
 git clone -b "${branch}" "${gitbase}"
 cd phantomjs
-git archive --verbose --format zip --prefix "phantomjs-${branch}/" --output "${basedir}/SOURCES/phantomjs-${branch}-source.zip" HEAD
+git archive --verbose --prefix "phantomjs-${branch}/" --output "${basedir}/SOURCES/phantomjs-${branch}-source.tar.gz" HEAD
 rm -rf "${tmp}"

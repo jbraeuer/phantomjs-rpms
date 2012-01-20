@@ -10,8 +10,9 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-spec=$(readlink -f "$1")
-basedir=$(dirname $(readlink -f "$0"))
+
+basedir=$(cd $(dirname "$0"); pwd)
+spec=$(cd $(dirname "$1"); pwd)
 
 mkdir -p ${basedir}/{BUILD,BUILDROOT,RPMS}
 rpmbuild --verbose \

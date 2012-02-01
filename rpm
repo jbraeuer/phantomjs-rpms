@@ -12,7 +12,7 @@ fi
 
 
 basedir=$(cd $(dirname "$0"); pwd)
-spec=$(cd $(dirname "$1"); pwd)
+spec="$(cd $(dirname "$1"); pwd)/$(basename "$1")"
 
 mkdir -p ${basedir}/{BUILD,BUILDROOT,RPMS}
 rpmbuild --verbose \

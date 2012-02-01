@@ -19,10 +19,12 @@ run your headless tests.
 
 # How to build
 - source code is included for PhantomJS 1.1, 1.2 and 1.3
-- ./rpm SPECS/phantomjs-$version.spec
+- for PhantomJS 1.4.0 and 1.4.1 use `fetch-phantomjs-branch $version`
+- `./rpm SPECS/phantomjs-$version.spec`
 
 # Build branches
 - use fetch-phantomjs-branch script to fetch sources from branches
 - modify .spec to suit your needs
 
 Have fun!
+Jens Braeuer

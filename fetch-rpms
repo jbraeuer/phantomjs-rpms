@@ -1,67 +1,103 @@
 #! /bin/bash
 
-readonly QTVER=4.7.2-1_18
-readonly BASEDIR=$(cd $(dirname "$0"); pwd)
-
-el6_rpms () 
-{
-cat <<EOF
-qt47-${QTVER}.el${version}.${arch}.rpm
-qt47-assistant-${QTVER}.el${version}.${arch}.rpm
-qt47-config-${QTVER}.el${version}.${arch}.rpm
-qt47-demos-${QTVER}.el${version}.${arch}.rpm
-qt47-designer-plugin-phonon-${QTVER}.el${version}.${arch}.rpm
-qt47-devel-${QTVER}.el${version}.${arch}.rpm
-qt47-examples-${QTVER}.el${version}.${arch}.rpm
-qt47-mysql-${QTVER}.el${version}.${arch}.rpm
-qt47-odbc-${QTVER}.el${version}.${arch}.rpm
-qt47-postgresql-${QTVER}.el${version}.${arch}.rpm
-qt47-tds-${QTVER}.el${version}.${arch}.rpm
-qt47-webkit-${QTVER}.el${version}.${arch}.rpm
-qt47-webkit-devel-${QTVER}.el${version}.${arch}.rpm
-qt47-x11-${QTVER}.el${version}.${arch}.rpm
-phonon-backend-gstreamer-${QTVER}.el${version}.${arch}.rpm
-EOF
+qt_rpms() {
+    local version="$1"
+    local arch="$2"
+    cat <<-EOF
+	qt47-${QTVER}.el${version}.${arch}.rpm
+	qt47-assistant-${QTVER}.el${version}.${arch}.rpm
+	qt47-config-${QTVER}.el${version}.${arch}.rpm
+	qt47-demos-${QTVER}.el${version}.${arch}.rpm
+	qt47-designer-plugin-phonon-${QTVER}.el${version}.${arch}.rpm
+	qt47-devel-${QTVER}.el${version}.${arch}.rpm
+	qt47-examples-${QTVER}.el${version}.${arch}.rpm
+	qt47-mysql-${QTVER}.el${version}.${arch}.rpm
+	qt47-odbc-${QTVER}.el${version}.${arch}.rpm
+	qt47-postgresql-${QTVER}.el${version}.${arch}.rpm
+	qt47-tds-${QTVER}.el${version}.${arch}.rpm
+	qt47-webkit-${QTVER}.el${version}.${arch}.rpm
+	qt47-webkit-devel-${QTVER}.el${version}.${arch}.rpm
+	qt47-x11-${QTVER}.el${version}.${arch}.rpm
+	phonon-backend-gstreamer-${QTVER}.el${version}.${arch}.rpm
+	EOF
 }
 
-el5_rpms ()
-{
-cat <<EOF
-$(el6_rpms)
-sqlite-3.6.20-1.el${version}.${arch}.rpm
-sqlite-devel-3.6.20-1.el${version}.${arch}.rpm
-EOF
+sqlite_rpms() {
+    local version="$1"
+    local arch="$2"
+    cat <<-EOF
+	sqlite-3.6.20-1.el${version}.${arch}.rpm
+	sqlite-devel-3.6.20-1.el${version}.${arch}.rpm
+	EOF
 }
 
-set -e
-for version in 5 6; do
-    case "$version" in
-	5)
-	    archs="x86_64 i386"
-	    ;;
-	6)
-	    archs="x86_64 i686"
-	    ;;
-    esac
+run() {
+    echo "$@"
+    [ "${DRYRUN}" != "" ] || "$@"
+}
 
-    for arch in $archs; do
-	case "$arch" in
+fetch() {
+    local baseurl="$1"
+    local pkg="$2"
+
+    run rm -f "${pkg}"
+    run wget "${baseurl}/${pkg}"
+}
+
+set_basearch() {
+    local arch="$1"
+
+    case "$arch" in
 	i386|i686)
 	    basearch="i386"
 	    ;;
 	x86_64)
 	    basearch="x86_64"
 	    ;;
-	esac
+    esac
+}
 
+set_archs() {
+    local version="$1"
+    case "$version" in
+	5)
+	    archs=(x86_64 i386)
+	    ;;
+	6)
+	    archs=(x86_64 i686)
+	    ;;
+    esac
+}
+
+set_pkgs() {
+    local version="$1"
+    local arch="$2"
+
+    pkgs=$(qt_rpms "${version}" "${arch}")
+    if [ "${version}" == 5 ]; then
+	pkgs="${pkgs} $(sqlite_rpms "${version}" "${arch}")"
+    fi
+}
+
+set -e
+
+readonly QTVER=4.7.2-1_18
+readonly BASEDIR=$(cd $(dirname "$0"); pwd)
+readonly VERSIONS=(5 6)
+
+for version in "${VERSIONS[@]}" ; do
+    set_archs "${version}"
+
+    for arch in "${archs[@]}"; do
+	set_basearch "${arch}"
+	set_pkgs "${version}" "${arch}"
 	baseurl="http://dl.atrpms.net/el${version}-${basearch}/atrpms/testing"
+
 	mkdir -p "${BASEDIR}/RPMS/el/${version}/${basearch}"
 	cd "${BASEDIR}/RPMS/el/${version}/${basearch}"
 
-	# "qt47-doc-${QTVER}.el${version}.${arch}.rpm" - skip doc package, big and useless
-	for pkg in $(el"$version"_rpms); do
-	    rm -f "${pkg}"
-	    wget "${baseurl}/${pkg}"
+	for pkg in ${pkgs}; do
+	    fetch "${baseurl}" "${pkg}"
 	done
     done
 done

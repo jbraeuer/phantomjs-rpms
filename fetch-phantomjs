@@ -15,6 +15,6 @@ gitbase=https://github.com/ariya/phantomjs.git
 cd "${tmp}"
 git clone  "${gitbase}"
 cd phantomjs
-git checkout $refname
+git checkout "${refname}"
 git archive --verbose --prefix "phantomjs-${refname}/" --output "${basedir}/SOURCES/phantomjs-${refname}-source.tar.gz" HEAD
 rm -rf "${tmp}"
